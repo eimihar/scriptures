@@ -1,8 +1,7 @@
-import {Component, Injectable} from "@angular/core";
+import {Component, Injectable, Input} from "@angular/core";
 import {Chapter} from "./chapter";
 import {QuranService} from "../quran.service";
 import {ActivatedRoute, Params} from "@angular/router";
-import {Input} from "@angular/core/src/metadata/directives";
 @Component({
     moduleId: module.id,
     selector: 'chapter',

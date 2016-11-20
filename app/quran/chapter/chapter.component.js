@@ -12,7 +12,6 @@ var core_1 = require("@angular/core");
 var chapter_1 = require("./chapter");
 var quran_service_1 = require("../quran.service");
 var router_1 = require("@angular/router");
-var directives_1 = require("@angular/core/src/metadata/directives");
 var ChapterComponent = (function () {
     function ChapterComponent(quran, route) {
         this.quran = quran;
@@ -28,7 +27,7 @@ var ChapterComponent = (function () {
             .subscribe(function (chapter) { return _this.chapter = chapter; });
     };
     __decorate([
-        directives_1.Input(), 
+        core_1.Input(), 
         __metadata('design:type', chapter_1.Chapter)
     ], ChapterComponent.prototype, "chapter", void 0);
     ChapterComponent = __decorate([
