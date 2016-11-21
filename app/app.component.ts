@@ -10,14 +10,15 @@ import {Verse} from "./quran/verse/verse";
     moduleId: module.id,
     selector: 'quran-app',
     template: `<div class="header top-header">
-    <div class="container">
+    <a class="top-menu-toggler" href="javascript:;" (click)="toggleMenu()"></a>
+    <div class="container container-menu" [class.shown]="menuShown">
         <div class="row">
             <div class="col-sm-12">
                 <ul class="nav nav-tabs" style="padding-top: 10px; padding-bottom: 10px;">
                     <li role="presentation" *ngFor="let nav of navs">
-                        <a routerLink="{{nav.uri}}" style="padding: 0px 15px 0px 15px;">{{nav.label}}</a>
+                        <a (click)="goToPage([nav.uri])" href="javascript:;" style="padding: 0px 15px 0px 15px;">{{nav.label}}</a>
                     </li>
-                    <li style="float: right; padding-right: 10px;">
+                    <li style="float: right; padding-right: 10px;" class="container-header-input">
                         <div class="form-inline" style="align: center;">
                             <input class="form-control" #verseSearch placeholder="Search any verse(s)..." (keyup)="searchVerse(verseSearch.value)"  />
                             <select class="form-control" #chapterSelect (change)="goToChapter(chapterSelect.value)">
@@ -34,7 +35,7 @@ import {Verse} from "./quran/verse/verse";
         </div>
     </div>
 </div>
-<div class="container" style="margin-top: 110px;">
+<div class="container" style="margin-top: 50px;">
     <div class="row">
         <div *ngIf="isSearching" class="col-sm-12 search-list">
             <ul>
@@ -74,6 +75,52 @@ import {Verse} from "./quran/verse/verse";
     background: white;
     height: inherit;
     z-index: 1;
+}
+
+.container-menu
+{
+    /*border-bottom: 1px solid #b7b7b7;*/
+}
+
+.shown
+{
+    display: block !important;
+}
+
+.top-menu-toggler
+{
+    display: none;
+    padding-left: 10px;
+    height: 10px;
+    background: #d0a8a9;
+}
+
+@media (max-width: 768px) {
+    .top-menu-toggler {
+        display: block;
+    }
+    
+    .container-header-input input, .container-header-input select
+    {
+        margin-top: 5px;
+    }
+    
+    .top-header .container-menu
+    {
+        display: none;
+    }
+    
+    .container-menu .nav
+    {
+        border-bottom: 1px solid #efe2e2;
+    }
+    
+    .container-header-input
+    {
+        float: none;
+        width: 100%;
+        text-align: center;
+    }
 }`]
 })
 @Injectable()
@@ -83,6 +130,7 @@ export class AppComponent implements OnInit{
     searchTimeout = null;
     searchedVerses: Verse[] = [];
     isSearching: boolean = false;
+    menuShown: boolean = false;
 
     constructor(private quran: QuranService, private router: Router){}
 
@@ -96,11 +144,20 @@ export class AppComponent implements OnInit{
     }
 
     goToChapter(number): void {
+        this.menuShown = false;
         this.router.navigate(['/chapter', number]);
+    }
+
+    goToPage(param): void {
+        this.menuShown = false;
+
+        this.router.navigate(param);
     }
 
     setLanguage(lang: string): void {
         this.quran.setLanguage(lang);
+
+        this.menuShown = false;
     }
 
     searchVerse(text: string): void {
@@ -119,9 +176,14 @@ export class AppComponent implements OnInit{
 
         this.searchTimeout = setTimeout(() => {
             this.quran.searchVerses(text).then((verses: Verse[]) => {
+                this.menuShown = false;
                 this.searchedVerses = verses;
             });
 
         }, 500);
+    }
+
+    toggleMenu(): void {
+        this.menuShown = this.menuShown ? false : true;
     }
 }
