@@ -12,7 +12,7 @@ import {ActivatedRoute, Params} from "@angular/router";
 }
 </style>
 <div *ngIf="chapter">
-    <h1>{{chapter.title}}</h1>
+    <h1>{{chapter.getDisplayLabel()}} ({{chapter.anglicized_title}})</h1>
     <div class="chapter-verses">
         <ul style="list-style: none; padding: 0px;">
             <li *ngFor="let verse of chapter.verses" style="padding: 10px 0 10px 0; border-bottom: 1px solid #d8d8d8;">

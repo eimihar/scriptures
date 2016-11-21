@@ -9,30 +9,32 @@ import {Verse} from "./quran/verse/verse";
 @Component({
     moduleId: module.id,
     selector: 'quran-app',
-    template: `<div class="container" style="margin-top: 100px;">
-    <div class="row">
-        <div class="col-sm-12">
-            <ul class="nav nav-tabs">
-                <li role="presentation" *ngFor="let nav of navs">
-                    <a routerLink="{{nav.uri}}">{{nav.label}}</a>
-                </li>
-                <li style="float: right; ">
-                    <select class="form-control" (change)="setLanguage($event.target.value)">
-                        <option value="en">English</option>
-                        <option value="ms">Bahasa</option>
-                    </select>
-                </li>
-                <li style="float: right; padding-right: 10px;">
-                    <select class="form-control" #chapterSelect (change)="goToChapter(chapterSelect.value)">
-                        <option *ngFor="let chapter of chapters" value="{{chapter.number}}" >{{chapter.title}}</option>
-                    </select>
-                </li>
-                <li style="float: right; padding-right: 10px;">
-                    <input class="form-control" #verseSearch placeholder="Search any verse(s)..." (keyup)="searchVerse(verseSearch.value)"  />
-                </li>
-            </ul>
+    template: `<div class="header top-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="nav nav-tabs" style="padding-top: 10px; padding-bottom: 10px;">
+                    <li role="presentation" *ngFor="let nav of navs">
+                        <a routerLink="{{nav.uri}}" style="padding: 0px 15px 0px 15px;">{{nav.label}}</a>
+                    </li>
+                    <li style="float: right; padding-right: 10px;">
+                        <div class="form-inline" style="align: center;">
+                            <input class="form-control" #verseSearch placeholder="Search any verse(s)..." (keyup)="searchVerse(verseSearch.value)"  />
+                            <select class="form-control" #chapterSelect (change)="goToChapter(chapterSelect.value)">
+                                <option *ngFor="let chapter of chapters" value="{{chapter.number}}" >{{chapter.getDisplayLabel()}}</option>
+                            </select>
+                            <select class="form-control" (change)="setLanguage($event.target.value)">
+                                <option value="en">English</option>
+                                <option value="ms">Bahasa</option>
+                            </select>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
+</div>
+<div class="container" style="margin-top: 110px;">
     <div class="row">
         <div *ngIf="isSearching" class="col-sm-12 search-list">
             <ul>
@@ -62,6 +64,16 @@ import {Verse} from "./quran/verse/verse";
     font-size: 1.3em;
     padding: 10px 0 10px 0;
     border-bottom: 1px solid #d8d8d8;
+}
+
+.top-header
+{
+    position: fixed;
+    width: 100%;
+    top: 0px;
+    background: white;
+    height: inherit;
+    z-index: 1;
 }`]
 })
 @Injectable()

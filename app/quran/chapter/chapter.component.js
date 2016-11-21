@@ -34,7 +34,7 @@ var ChapterComponent = (function () {
         core_1.Component({
             moduleId: module.id,
             selector: 'chapter',
-            template: "<style type=\"text/css\">\n.chapter-verses li\n{\n    font-size: 1.3em;\n}\n</style>\n<div *ngIf=\"chapter\">\n    <h1>{{chapter.title}}</h1>\n    <div class=\"chapter-verses\">\n        <ul style=\"list-style: none; padding: 0px;\">\n            <li *ngFor=\"let verse of chapter.verses\" style=\"padding: 10px 0 10px 0; border-bottom: 1px solid #d8d8d8;\">\n                <div>{{verse.text}} - <strong>{{chapter.number}}:{{verse.number}}</strong></div>\n            </li>\n        </ul>\n    </div>\n</div>\n"
+            template: "<style type=\"text/css\">\n.chapter-verses li\n{\n    font-size: 1.3em;\n}\n</style>\n<div *ngIf=\"chapter\">\n    <h1>{{chapter.getDisplayLabel()}} ({{chapter.anglicized_title}})</h1>\n    <div class=\"chapter-verses\">\n        <ul style=\"list-style: none; padding: 0px;\">\n            <li *ngFor=\"let verse of chapter.verses\" style=\"padding: 10px 0 10px 0; border-bottom: 1px solid #d8d8d8;\">\n                <div>{{verse.text}} - <strong>{{chapter.number}}:{{verse.number}}</strong></div>\n            </li>\n        </ul>\n    </div>\n</div>\n"
         }),
         core_1.Injectable(), 
         __metadata('design:paramtypes', [quran_service_1.QuranService, router_1.ActivatedRoute])

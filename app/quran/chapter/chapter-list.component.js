@@ -17,6 +17,7 @@ var ChapterListComponent = (function () {
     ChapterListComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.quran.getChapters().then(function (chapters) {
+            console.log(chapters);
             _this.chapters = chapters;
         });
     };
@@ -25,7 +26,7 @@ var ChapterListComponent = (function () {
             moduleId: module.id,
             selector: 'chapter-list',
             // template: ``
-            template: "<style type=\"text/css\">\n.chapter-list .col-sm-1\n{\n    padding: 5px;\n}\n</style>\n<h2>All Chapters</h2>\n<div class=\"row\" class=\"chapter-list\">\n    <div class=\"col-sm-1\" *ngFor=\"let chapter of chapters\">\n        <a [routerLink]=\"['/chapter', chapter.number]\">{{chapter.title}}</a>\n    </div>\n</div>"
+            template: "<style type=\"text/css\">\n.chapter-list .col-sm-1\n{\n    padding: 5px;\n}\n</style>\n<h2>All Chapters</h2>\n<div class=\"row\" class=\"chapter-list\">\n    <div class=\"col-lg-2 col-sm-3\" *ngFor=\"let chapter of chapters\">\n        <a [routerLink]=\"['/chapter', chapter.number]\">{{chapter.getDisplayLabel()}}</a>\n    </div>\n</div>"
         }),
         core_1.Injectable(), 
         __metadata('design:paramtypes', [quran_service_1.QuranService])

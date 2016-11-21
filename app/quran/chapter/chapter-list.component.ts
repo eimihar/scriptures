@@ -14,8 +14,8 @@ import {QuranService} from "../quran.service";
 </style>
 <h2>All Chapters</h2>
 <div class="row" class="chapter-list">
-    <div class="col-sm-1" *ngFor="let chapter of chapters">
-        <a [routerLink]="['/chapter', chapter.number]">{{chapter.title}}</a>
+    <div class="col-lg-2 col-sm-3" *ngFor="let chapter of chapters">
+        <a [routerLink]="['/chapter', chapter.number]">{{chapter.getDisplayLabel()}}</a>
     </div>
 </div>`
 })
@@ -28,6 +28,7 @@ export class ChapterListComponent implements OnInit{
 
     ngOnInit(): void {
         this.quran.getChapters().then(chapters => {
+            console.log(chapters);
             this.chapters = chapters;
         });
     }

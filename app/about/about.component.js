@@ -15,7 +15,7 @@ var AboutComponent = (function () {
     AboutComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            template: "<h2>About</h2>\n<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <p>An simple Quran project written in AngularJs 2</p>\n        <p>Translation credits all the way go to : http://globalquran.com</p>\n    </div>\n</div>\n"
+            template: "<h2>About</h2>\n<div class=\"row\">\n    <div class=\"col-sm-12\">\n        <p>An simple Quran project written in AngularJs 2</p>\n        <p>Translation credits all the way go to : <a href=\"http://globalquran.com\" target=\"_blank\">http://globalquran.com</a> </p>\n    </div>\n</div>\n"
         }), 
         __metadata('design:paramtypes', [])
     ], AboutComponent);

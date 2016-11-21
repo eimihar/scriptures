@@ -8,6 +8,7 @@ import "rxjs/add/operator/toPromise";
 export class QuranService {
     lang: string;
     chapters: Object = {};
+    names: Object = {};
     translation: string;
     events = {
         languageChange: {}
@@ -21,24 +22,33 @@ export class QuranService {
     }
 
     prepareChapters(response: Response) {
-        var verses: Object = response.json()[this.translation];
+        // and load the names.
+        return this.getNames().then((nameResponse: Response) => {
+            var res = nameResponse.json();
 
-        var chapters = {};
+            var verses: Object = response.json()[this.translation];
 
-        for(var id in verses)
-        {
-            var verse = verses[id];
+            var chapters = {};
 
-            if(!chapters[verse.surah])
-                chapters[verse.surah] = [];
+            for(var id in verses)
+            {
+                var verse = verses[id];
 
-            chapters[verse.surah].push(new Verse(verse.surah, verse.ayah, verse.verse));
-        }
+                if(!chapters[verse.surah])
+                    chapters[verse.surah] = [];
 
-        for(var number in chapters)
-            this.chapters[this.translation].push(new Chapter(+number, 'Chapter '+number, chapters[number]));
+                chapters[verse.surah].push(new Verse(verse.surah, verse.ayah, verse.verse));
+            }
 
-        return this.chapters[this.translation];
+            for(var number in chapters) {
+                var title = res[number].title;
+                var anglicized_title = res[number].anglicized_title;
+
+                this.chapters[this.translation].push(new Chapter(+number, title, anglicized_title, chapters[number]));
+            }
+
+            return this.chapters[this.translation];
+        });
     }
 
     setLanguage(lang: string): Promise<Chapter[]> {
@@ -61,6 +71,21 @@ export class QuranService {
         });
     }
 
+    getNames(): Promise<Object> {
+        var map = {
+            en: 'en.chapters_name.json',
+            ms: 'ms.chapters_name.json'
+        };
+
+        if(this.names[map[this.lang]])
+            return new Promise<Object>(promise => promise()).then(() => {
+                return this.names[map[this.lang]];
+            });
+
+        return this.names[map[this.lang]] = this.http.get('/resources/'+map[this.lang])
+            .toPromise();
+    }
+
     getChapters(): Promise<Chapter[]> {
         if(this.chapters[this.translation].length > 0)
             return new Promise<Chapter[]>(resolve => resolve()).then(() => {
@@ -71,7 +96,7 @@ export class QuranService {
         if(this.loadingChapters)
             return this.loadingChapters;
 
-        return this.loadingChapters = this.http.get('/resources/' + this.translation + '.json')
+        return this.loadingChapters = this.http.get('/resources/translations/' + this.translation + '.json')
             .toPromise()
             .then(response => {this.loadingChapters = null; return response;})
             .then(response => this.prepareChapters(response));
