@@ -91,8 +91,11 @@ import {Verse} from "./quran/verse/verse";
 {
     display: none;
     padding-left: 10px;
-    height: 10px;
+    height: 25px;
     background: #d0a8a9;
+    right: 0px;
+    /*position: absolute;*/
+    z-index: 10;
 }
 
 @media (max-width: 768px) {
